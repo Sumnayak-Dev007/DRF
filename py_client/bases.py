@@ -1,27 +1,17 @@
 import requests
 
-endpoint = "https://httpbin.org/status/200"
-endpoint = "https://httpbin.org/anything"
+
+# endpoint = "https://httpbin.org/anything"
+endpoint = " http://127.0.0.1:8000/api/"
 
 
+# get_res = requests.get(endpoint,params = {"abc":1234},json={"queryy":"Echo GET request"})
 get_res = requests.get(endpoint)
+# get_res = requests.post(endpoint,json={"title":None})
 print(get_res.text)
+print(get_res.status_code)
 
 
-{
-  "args": {},
-  "data": "",
-  "files": {},
-  "form": {},
-  "headers": {
-    "Accept": "*/*",
-    "Accept-Encoding": "gzip, deflate",
-    "Host": "httpbin.org",
-    "User-Agent": "python-requests/2.32.3",
-    "X-Amzn-Trace-Id": "Root=1-683d96ca-1a40f28f70fb194f6c370d73"
-  },
-  "json": null,
-  "method": "GET",
-  "origin": "103.211.52.137",
-  "url": "https://httpbin.org/anything"
-}
+# print(get_res.json())
+
+
