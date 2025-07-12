@@ -38,5 +38,6 @@ def api_home(request, *args, **kwargs):
             return Response(serializer.data)
         return Response({"message":"invalid data"},status=400)
 
-
     
+def apidemo(request):
+    return JsonResponse({"message":"Demooooo"})
