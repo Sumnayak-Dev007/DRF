@@ -1,5 +1,6 @@
 from rest_framework import authentication,generics,mixins,permissions
 from .models import Product
+from rest_framework import status
 from .serializers import ProductSerializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -87,7 +88,15 @@ class PutAPIView(generics.UpdateAPIView):
 class DeleteAPIView(generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
-    lookup_fiels = 'pk'
+    lookup_field = 'pk'
+
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"message": "Product deleted successfully."},
+            status=status.HTTP_200_OK
+        )
 
     def perform_destroy(self,instance):
         super().perform_destroy(instance)

@@ -3,7 +3,7 @@ import requests
 endpoint = "http://127.0.0.1:8000/api/product/1/update/"
 
 data = {
-    "title":"Hello World my old frend",
+    "title":"Hello World my old friend",
     "price": 122.75
 }
 
