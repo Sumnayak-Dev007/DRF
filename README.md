@@ -7,6 +7,13 @@ authentication_classes = [authentication.SessionAuthentication]
 # DjangoModelPermissions
 
 # Token Authentications
+Create Token during User Login : 
+
+from rest_framework.authtoken.models import Token
+
+token, _ = Token.objects.get_or_create(user=user) 
+
+
 
 
 
