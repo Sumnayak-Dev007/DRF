@@ -6,7 +6,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.authentication import TokenAuthentication
-from .permissions import IsStaffEditorPermission
+from api.permissions import IsStaffEditorPermission
+
+from api.mixins import IsStaffEditorPermissionMixins
 
 
 
