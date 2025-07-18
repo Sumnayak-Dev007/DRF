@@ -10,6 +10,8 @@ class ProductSerializers(serializers.ModelSerializer):
             view_name='product-details',
             lookup_field='pk')
     email = serializers.EmailField(write_only=True)
+    # name = serializers.CharField(source='title',read_only=True)
+
     
     class Meta:
         model = Product
@@ -26,11 +28,19 @@ class ProductSerializers(serializers.ModelSerializer):
         ]
 
 
-    def create(self,validated_data):
-        email = validated_data.pop('email')
+    def validate_title(self,value):
+        qs = Product.objects.filter(title__iexact=value)
+        if qs.exists():
+            raise serializers.ValidationError(f'{value} is already a product name')
+        return value
+    
+    def create(self, validated_data):
+        email = validated_data.pop('email', None)
         obj = super().create(validated_data)
-        print(email,obj)
+        if email:
+            print(f"Email captured: {email}")
         return obj
+
 
     def update(self,instance,validated_data):
         email = validated_data.pop('email')
