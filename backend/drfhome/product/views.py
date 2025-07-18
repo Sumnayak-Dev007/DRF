@@ -67,6 +67,8 @@ class ListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsStaffEditorPermission]
 
     def perform_create(self,serializer):
+        email = serializer.validated_data.pop('email')
+        print(email)
         title = serializer.validated_data.get('title')
         content = serializer.validated_data.get('content') or None
         if content is None:
