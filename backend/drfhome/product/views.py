@@ -7,7 +7,10 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.authentication import TokenAuthentication
 from api.permissions import IsStaffEditorPermission
-
+from api.mixins import (
+    UserQuerySetMixin,
+    IsStaffEditorPermissionMixins,
+    )
 from api.mixins import IsStaffEditorPermissionMixins
 
 
@@ -57,14 +60,16 @@ class PostAPIView(generics.CreateAPIView):
             content = title
         serializer.save(content = content)
 
-class ListCreateAPIView(generics.ListCreateAPIView):
+class ListCreateAPIView(
+    UserQuerySetMixin,
+    IsStaffEditorPermissionMixins,
+    generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
     authentication_classes = [
     authentication.SessionAuthentication,
     TokenAuthentication
     ]
-    permission_classes = [IsStaffEditorPermission]
 
     def perform_create(self,serializer):
         email = serializer.validated_data.pop('email')
@@ -73,8 +78,22 @@ class ListCreateAPIView(generics.ListCreateAPIView):
         content = serializer.validated_data.get('content') or None
         if content is None:
             content = title
-        serializer.save(content = content)
+        serializer.save(user=self.request.user,content = content)
 
+
+    # def get_queryset(self,*args,**kwargs):
+    #     qs = super().get_queryset(*args,**kwargs)
+    #     request = self.request
+    #     user = request.user
+    #     if not user.is_authenticated:
+    #         return Product.objects.none()
+    #     print(request.user)
+    #     return qs.filter(user = request.user)
+    
+
+
+
+    
 # class ProductListAPIView(generics.ListAPIView):
 #     queryset = Product.objects.all()
 #     serializer_class = ProductSerializers
