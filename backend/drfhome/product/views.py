@@ -61,7 +61,7 @@ class PostAPIView(generics.CreateAPIView):
         serializer.save(content = content)
 
 class ListCreateAPIView(
-    UserQuerySetMixin,
+    # UserQuerySetMixin,
     IsStaffEditorPermissionMixins,
     generics.ListCreateAPIView):
     queryset = Product.objects.all()
