@@ -4,7 +4,7 @@ from api.serializers import UserPublicSerializer
 from .models import Product
 
 class ProductSerializers(serializers.ModelSerializer):
-    owner = UserPublicSerializer(source = 'user')
+    # owner = UserPublicSerializer(source = 'user')
     my_user_data = serializers.SerializerMethodField(read_only=True)
     my_discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
@@ -18,7 +18,7 @@ class ProductSerializers(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
-            'owner',
+            # 'owner',
             'edit_url',
             'url',
             'email',
