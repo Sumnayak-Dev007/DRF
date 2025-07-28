@@ -12,7 +12,7 @@ from api.mixins import (
     IsStaffEditorPermissionMixins,
     )
 from api.mixins import IsStaffEditorPermissionMixins
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
@@ -67,6 +67,7 @@ class ListCreateAPIView(
     queryset = Product.objects.all()
     serializer_class = ProductSerializers
     authentication_classes = [
+    JWTAuthentication,
     authentication.SessionAuthentication,
     TokenAuthentication
     ]
