@@ -28,7 +28,8 @@ class ProductSerializers(serializers.ModelSerializer):
             'price',
             'sale_price',
             'my_discount',
-            'my_user_data'
+            'my_user_data',
+            'public'
         ]
 
     def get_my_user_data(self,obj):

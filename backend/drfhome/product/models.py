@@ -12,20 +12,16 @@ class ProductQuerySet(models.QuerySet):
     def is_public(self):
         return self.filter(public=True)
 
-    def search(self, query, user=None):
+    def search(self, query):
         lookup = Q(title__icontains=query) | Q(content__icontains=query)
-        qs = self.is_public().filter(lookup)
-        if user is not None:
-            qs2 = self.filter(user=user).filter(lookup)
-            qs = (qs | qs2).distinct()
-        return qs
+        return self.is_public().filter(lookup)
 
 class ProductManager(models.Manager):
-    def get_queryset(self, *args,**kwargs):
+    def get_queryset(self, *args, **kwargs):
         return ProductQuerySet(self.model, using=self._db)
 
-    def search(self, query, user=None):
-        return self.get_queryset().search(query, user=user)
+    def search(self, query):
+        return self.get_queryset().search(query)
 
 class Product(models.Model):
     user = models.ForeignKey(User, default=1, null=True, on_delete=models.SET_NULL)

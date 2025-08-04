@@ -4,19 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Interface</title>
+     <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #results { margin-top: 20px; }
+    .product-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .product-card h3 { margin: 0; }
+    .product-card p { margin: 5px 0; }
+  </style>
 </head>
 <body>
 
     <form id="login-form">
+        <h5>Fill your credentials to log in</h5>
 <input type="text" name="username" placeholder="Your
 Username" />
 <input type="password" name="password",
 placeholder="Your Password">
 <input type="submit" value="Login" />
 </form>
+
 <div id="content-container"></div>
+<h5>Search Product by Title</h5>
+<input type="text" id="searchInput" placeholder="Search products..." />
+<button onclick="searchProducts()">Search</button>
+<div id="results"></div>
 
-
+ 
  <script src="./client.js"></script>
 </body>
 </html>

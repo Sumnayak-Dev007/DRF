@@ -124,3 +124,53 @@ function getProductList() {
 if (loginForm) {
     loginForm.addEventListener("submit", handleLogin);
 }
+
+
+async function searchProducts() {
+  const query = document.getElementById("searchInput").value;
+  const resultsContainer = document.getElementById("results");
+  resultsContainer.innerHTML = "Searching...";
+
+  try {
+    const response = await fetch(`http://localhost:8000/api/search/?q=${encodeURIComponent(query)}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // Add this only if your search endpoint is protected
+        // "Authorization": `Bearer ${localStorage.getItem("access")}`
+      }
+    });
+
+    const data = await response.json();
+    console.log("API response data:", data);
+
+    const products = data.results || data;  // handle paginated or direct list
+    if (!Array.isArray(products)) {
+      throw new Error("Invalid data format: Expected an array of products");
+    }
+
+    resultsContainer.innerHTML = "";
+
+    if (products.length === 0) {
+      resultsContainer.innerHTML = "<p>No results found.</p>";
+      return;
+    }
+
+    products.forEach(product => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <h3>${product.title}</h3>
+        <p>${product.content || "No description available"}</p>
+        <p><strong>Price:</strong> $${product.price}</p>
+      `;
+      resultsContainer.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Search Error:", error);
+    resultsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+  }
+}
+
+window.searchProducts = searchProducts;
