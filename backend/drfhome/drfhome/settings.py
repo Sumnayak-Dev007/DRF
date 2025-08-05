@@ -163,7 +163,8 @@ REST_FRAMEWORK = {
 #enviroment variables
 ALGOLIA = {
   'APPLICATION_ID': '8H1FCJWZWP',
-  'API_KEY': '641ca1e39b3a0738fe4378e475599fd7' 
+  'API_KEY': '641ca1e39b3a0738fe4378e475599fd7',
+  'INDEX_PREFIX' : 'suman'
 }
 
 SIMPLE_JWT = {

@@ -33,8 +33,7 @@ class Product(models.Model):
     objects = ProductManager()
 
     def should_index(self):
-        print(f"[Algolia] Checking should_index for: {self.title} (public={self.public})")
-        return self.public
+        return self.public  
 
     def get_tags_list(self):
         return [random.choice(TAGS_MODEL_VALUES)]
@@ -43,6 +42,10 @@ class Product(models.Model):
     @property
     def sale_price(self):
         return "%.2f" %(float(self.price)*0.8)
+
+    @property
+    def user_username(self):
+        return self.user.username if self.user else "Anonymous"
 
 
     def get_discount(self):
