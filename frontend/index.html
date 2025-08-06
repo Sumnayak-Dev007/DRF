@@ -27,13 +27,23 @@ Username" />
 placeholder="Your Password">
 <input type="submit" value="Login" />
 </form>
-
-<div id="content-container"></div>
-<h5>Search Product by Title</h5>
+<!-- 
+<h5>Search Product by Title (Django Search)</h5>
 <input type="text" id="searchInput" placeholder="Search products..." />
-<button onclick="searchProducts()">Search</button>
-<div id="results"></div>
+<button onclick="searchProducts()">Search</button> -->
 
+
+
+<h5>Search Product by Title (Algolia Search)</h5>
+<form id="search-form" method="GET">
+  <input type="text" name="q" placeholder="Your Search">
+  <input type="submit" value="search">
+
+</form>
+
+
+<div id="results"></div>
+<div id="content-container"></div>
  
  <script src="./client.js"></script>
 </body>

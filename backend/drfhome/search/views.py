@@ -58,7 +58,7 @@ class SearchListView(generics.GenericAPIView):
                 }
                 cleaned_hits.append(cleaned_hit)
 
-            return Response(cleaned_hits)
+            return Response({"hits": cleaned_hits})
 
         except Exception as e:
             return Response({'error': str(e)}, status=500)

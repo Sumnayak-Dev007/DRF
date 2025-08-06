@@ -1,5 +1,6 @@
 const baseEndpoint = "http://localhost:8000/api";
 const loginForm = document.getElementById("login-form");
+const searchForm = document.getElementById("search-form");
 const contentContainer = document.getElementById("content-container");
 
 // Login + store tokens
@@ -29,6 +30,74 @@ function handleLogin(event) {
         alert("Something went wrong during login.");
     });
 }
+
+
+function handleSearch(event) {
+    event.preventDefault();
+
+    const formData = new FormData(searchForm);         
+    const data = Object.fromEntries(formData);         
+    let searchParams = new URLSearchParams(data);
+    const endpoint = `${baseEndpoint}/search/?${searchParams}`;
+    const accessToken = localStorage.getItem("access");
+
+    fetch(endpoint, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            ...(accessToken && { Authorization: `Bearer ${accessToken}` })
+        }
+    })
+    .then(response => {
+        if (response.status === 401) {
+            return response.json().then(data => {
+                if (data.code === "token_not_valid") {
+                    refreshTokenAndRetry(() => handleSearch(event)); // 🔁 retry after refresh
+                } else {
+                    logout();
+                }
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data && contentContainer) {
+            contentContainer.innerHTML = "";  
+
+            if (data.hits && Array.isArray(data.hits)) {
+                if (data.hits.length > 0) {
+                    let htmlStr = "<ul>";  
+
+                for (let result of data.hits) {
+            console.log("Result:", result);  
+            htmlStr += `
+                <li style="margin-bottom: 1rem; border: 1px solid #ccc; padding: 1rem; border-radius: 8px;">
+                    <strong>${result.title ?? "No Title"}</strong><br>
+                    <small>Seller: ${result.user_username ?? "Unknown"}</small><br>
+                    Price: ₹${result.price ?? "N/A"}<br>
+                    Sale Price: ₹${result.sale_price ?? "N/A"}<br>
+                    Tags: ${Array.isArray(result._tags) ? result._tags.join(", ") : "None"}
+                </li>
+            `;
+        }
+
+        htmlStr += "</ul>";  // Close the list after the loop
+        contentContainer.innerHTML = htmlStr;
+
+                } else {
+                    contentContainer.innerHTML = "<p>No results found</p>";
+                }
+            } else {
+                contentContainer.innerHTML = "<p>No results found</p>";
+            }
+        }
+    })
+    .catch(error => {
+        console.error("Search Error:", error);
+        alert("Something went wrong during Search.");
+    });
+}
+
 
 // Display products
 function writeToContainer(data) {
@@ -124,6 +193,11 @@ function getProductList() {
 if (loginForm) {
     loginForm.addEventListener("submit", handleLogin);
 }
+
+if (searchForm) {
+    searchForm.addEventListener("submit", handleSearch);
+}
+
 
 
 async function searchProducts() {
