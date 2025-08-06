@@ -248,3 +248,39 @@ async function searchProducts() {
 }
 
 window.searchProducts = searchProducts;
+
+
+const { liteClient: algoliasearch } = window['algoliasearch/lite'];
+const searchClient = algoliasearch('8H1FCJWZWP', '5e9169fbedbbfbfc7aefa0e37712812a');
+
+
+const search = instantsearch({
+  indexName: 'suman_Product',
+  searchClient,
+});
+
+search.addWidgets([
+  instantsearch.widgets.searchBox({
+    container: '#searchbox',
+  }),
+
+  instantsearch.widgets.refinementList({
+  container: "#user-list",
+  attribute: 'user_username'
+}),
+
+
+  instantsearch.widgets.hits({
+    container: '#hits',
+    templates: {
+      item: `<div>
+        <b>{{#helpers.highlight}}{"attribute" : "title"}{{/helpers.highlight}}</b>
+        <b>{{#helpers.highlight}}{"attribute" : "content"}{{/helpers.highlight}}</b>
+        <p>Seller: {{user_username}}</p>
+        <p>₹{{price}}</p>
+      </div>`
+    }
+  })
+]);
+
+search.start();

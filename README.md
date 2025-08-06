@@ -34,7 +34,8 @@ So even though access tokens expire quickly, the refresh token allows the user t
   <li>The user <strong>must log in again</strong> (username + password).</li>
 </ul>
 
-
+<h3>Algolia Instant Search</h3>
+<p>https://www.algolia.com/doc/guides/building-search-ui/installation/js/#directly-in-your-page</p>
 
 
 
