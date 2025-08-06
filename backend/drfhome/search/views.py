@@ -11,22 +11,34 @@ class SearchListView(generics.GenericAPIView):
     queryset = [] 
 
     def get(self, request, *args, **kwargs):
-        query = request.GET.get('q')
-        if not query:
-            return Response({'error': 'Query parameter "q" is required.'}, status=400)
+        query = request.GET.get('q', '')  
+        tag = request.GET.get('tag')
+        if not query and not tag:
+            return Response({'error': 'At least one of "q" or "tag" must be provided.'}, status=400)
 
         try:
+            filters = []
+            if tag:
+                filters.append(f'_tags:"{tag}"')
+
+            filters_str = ' AND '.join(filters) if filters else None
+
+            search_params = {
+                "indexName": "suman_Product",
+                "query": query,
+                "hitsPerPage": 50,
+            }
+
+            if query:
+                search_params["restrictSearchableAttributes"] = ["title"]
+
+            if filters_str:
+                search_params["filters"] = filters_str
+
             response = client.search({
-                "requests": [
-                    {
-                        "indexName": "suman_Product",
-                        "query": query,
-                        "hitsPerPage": 50,
-                    },
-                ],
+                "requests": [search_params],
             })
 
-            response_dict = response.to_dict()
             hits = response.to_dict()['results'][0]['hits']
 
             cleaned_hits = []
