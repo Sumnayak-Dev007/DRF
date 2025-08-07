@@ -8,6 +8,22 @@
 
 
      <style>
+      .clear-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .clear-btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    display: inline-block; /* ← This is important */
+  }
     body { font-family: Arial, sans-serif; padding: 20px; }
     #results { margin-top: 20px; }
     .product-card {
@@ -51,6 +67,7 @@ placeholder="Your Password">
 
 <div id="searchbox"></div>
 <div id="user-list"></div>
+<div id="clear-refinements"></div>
 <div id="hits"></div>
 
 <div id="results"></div>

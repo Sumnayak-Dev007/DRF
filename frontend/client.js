@@ -264,6 +264,10 @@ search.addWidgets([
     container: '#searchbox',
   }),
 
+  instantsearch.widgets.clearRefinements({
+    container: '#clear-refinements'
+  }),
+
   instantsearch.widgets.refinementList({
   container: "#user-list",
   attribute: 'user_username'
@@ -274,8 +278,10 @@ search.addWidgets([
     container: '#hits',
     templates: {
       item: `<div>
+      <div>
         <b>{{#helpers.highlight}}{"attribute" : "title"}{{/helpers.highlight}}</b>
-        <b>{{#helpers.highlight}}{"attribute" : "content"}{{/helpers.highlight}}</b>
+      </div>
+        <p>{{#helpers.highlight}}{"attribute" : "content"}{{/helpers.highlight}}</p>
         <p>Seller: {{user_username}}</p>
         <p>₹{{price}}</p>
       </div>`
